@@ -1,4 +1,4 @@
-# python-soup-parser2excel
+# python-soup-parser
 
 Task is to collect and parse data from the given website URL
 
