@@ -14,7 +14,7 @@ item_names = []
 item_links = []
 
 # URL of the page to be scraped
-for p in range(1, 168):
+for p in range(121, 168):
     url = f"https://old.led7.ru/category/dizajnerskie-lyustry-i-svetilniki?page={p}"
     print('Обработка страницы ' + str(url))
     print('страница ' + str(p))
@@ -58,15 +58,16 @@ for p in range(1, 168):
 
         # Parse the HTML content using BeautifulSoup
         soup2 = BeautifulSoup(response2.text, 'lxml')
+        try:
+            product_items2 = soup2.find('div', class_='content').findAll(class_='prod_thumb')
+        except:
+            print("ошибка страницы ")
 
-        product_items2 = soup2.find('div', class_='content').findAll(class_='prod_thumb')
         for product2 in product_items2:
             sleep(0.5)
             item_name2 = product2.get('href')
             filename = os.path.basename(item_name2)
-
             remaining_download_tries = 30
-
             while remaining_download_tries > 0:
                 try:
                     urllib.request.urlretrieve(item_name2,
@@ -80,10 +81,5 @@ for p in range(1, 168):
                     continue
                 else:
                     break
-
-    # save data into excel file
-    data = {'Item Name': item_names, 'Link': item_links}
-    df = pd.DataFrame(data)
-    df.to_excel('output.xlsx', index=False)
 
 print('COMPLETED!')
